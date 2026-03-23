@@ -1,10 +1,7 @@
 Tarea integradora
 Directorio de Pacientes 
 
- Descripción
 Este proyecto consiste en una aplicación de escritorio desarrollada en Java utilizando JavaFX. Su propósito es apoyar a un consultorio médico en la administración de un directorio de pacientes, permitiendo registrar, consultar, actualizar y gestionar su información básica.
-
-El sistema implementa operaciones CRUD con persistencia en archivo local, de modo que los datos se conservan entre ejecuciones. Además, se aplican validaciones para asegurar la integridad de la información.
 
 Objetivo
 
@@ -24,8 +21,6 @@ Funcionalidades principales
 Consulta de pacientes en una tabla
  Edición de información existente
 Eliminación lógica (cambio de estatus a inactivo)
-
- Persistencia de datos
 
  Los datos se almacenan en un archivo CSV
 Al iniciar la aplicación se cargan automáticamente
