@@ -110,8 +110,32 @@ public class AppController {
 
     @FXML
     public void onEliminar() {
+        try {
+            int index = tblPacientes.getSelectionModel().getSelectedIndex();
+            Paciente seleccionado = tblPacientes.getSelectionModel().getSelectedItem();
+            if (seleccionado == null) {
+                lblMsg.setText("Seleccina un paciente primero");
+                return;
+            }
+Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmar Inactivacion");
+            alert.setHeaderText("Confirmacion para inactivar a: " + seleccionado.getNombre() + "?");
+if (alert.showAndWait().get() == ButtonType.OK){
+    service.deletePaciente(index);
 
-
+    loadFromFile();
+    lblMsg.setText("Paciente inactivado correctamente");
+}
+            txtNombre.clear();
+            txtEdad.clear();
+            txtTelefono.clear();
+            txtCurp.clear();
+            txtAlergias.clear();
+            loadFromFile();
+        }catch (IOException e){
+            lblMsg.setText("Error al guardar los cambios");
+            e.printStackTrace();
+        }
     }
 
 
