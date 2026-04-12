@@ -1,9 +1,11 @@
-package com.consultorio.utez2dpacientesjavafxequipo09;
 
+package com.consultorio.utez2dpacientesjavafxequipo09;
+import com.consultorio.utez2dpacientesjavafxequipo09.HelloApplication;
 import javafx.application.Application;
 
 public class Launcher {
     public static void main(String[] args) {
-        Application.launch(HelloApplication.class, args);
+        // Esta línea es la que realmente abre la ventana
+        HelloApplication.main(args);
     }
 }

@@ -1,0 +1,3 @@
+dulce,20,7772087338,abcdefgh,ninguna,true
+dulce,20,7772087338,abcdefg,ninguna,true
+luis fernando,21,7771413075,abcdefghijklm,todas,true
