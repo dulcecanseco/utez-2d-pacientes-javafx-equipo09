@@ -1,13 +1,12 @@
 package Services;
 import Models.Paciente;
 import Repositories.PersonFileRepository;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonService{  // Traemos el repositorio para usar sus métodos
-    private final PersonFileRepository repository = new PersonFileRepository();
+public class PersonService{
+    private final PersonFileRepository repository = new PersonFileRepository(); // Traemos el repositorio para usar sus metodos
 
     public void addPaciente(Paciente p) throws IOException {
         validarPaciente(p);
@@ -20,7 +19,7 @@ public class PersonService{  // Traemos el repositorio para usar sus métodos
         List<Paciente> actuales = repository.findAll();
 
         if (index >= 0 && index < actuales.size()) {
-            // Obtenemos el paciente de esa posicion y lo desactivamos
+            // Obtenemos el paciente de esa posicion y lo desactivamos en lugar de eliminar la linea del archivo
             actuales.get(index).setActive(false);
 
             // Guardamos la lista con el cambio hecho

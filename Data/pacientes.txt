@@ -1,4 +1,4 @@
 dulce,20,7772087338,abcdefgh,ninguna,true
 dulce,20,7772087338,abcdefg,ninguna,true
-luis fernando,21,7771413075,abcdefghijklm,ninguna,false
+luis fernando,21,7771413075,abcdefghijklm,ninguna,true
 Luis Fernando Rodriguez Rayo,21,7771413075,jbjwbubuwdkwbuce2i98,ninguna,true

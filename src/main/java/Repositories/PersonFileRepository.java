@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PersonFileRepository {
 
-    private final Path filePath = Paths.get("data","pacientes.txt");
+    private final Path filePath = Paths.get("data","pacientes.txt");  //esto es donde se van a guardar los datos
 
-    private void ensureFileExist() throws IOException {
+    private void ensureFileExist() throws IOException { //Revisa si existen la carpeta y el archivo. Es para que no truene el programa al iniciar
         if(Files.notExists(filePath.getParent())){
             Files.createDirectories(filePath.getParent());
         }
@@ -22,7 +22,7 @@ public class PersonFileRepository {
         }
     }
 
-    public List<Paciente> findAll() throws IOException {
+    public List<Paciente> findAll() throws IOException { //Este metodo hace que se llene la tabla de pacientes
         ensureFileExist();
         List<String> lineas = Files.readAllLines(filePath, StandardCharsets.UTF_8);
         List<Paciente> listaPacientes = new ArrayList<>();
@@ -36,7 +36,7 @@ public class PersonFileRepository {
         return listaPacientes;
     }
 
-    // Este metodo recibe la lista de pacientes y la guarda
+    // Este metodo recibe la lista de pacientes y la guarda, se activa cuando agregas, editas o eliminas
     public void saveAll(List<Paciente> pacientes) throws IOException {  //recibe pacientes los convierte a texto con el toString y los guarda.
         List<String> lineas = new ArrayList<>();
         for (Paciente p : pacientes) {
