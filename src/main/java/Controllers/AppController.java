@@ -6,28 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import Utils.DataHolder;
 
 import java.io.IOException;
-import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.Locale;
-
 
 public class AppController {
-    @FXML
-    private TableView<Paciente> tblPacientes;
-    @FXML
-    private TableColumn<Paciente, String> colNombre;
-    @FXML
-    private TableColumn<Paciente, String> colEdad;
-    @FXML
-    private TableColumn<Paciente, String> colTelefono;
-    @FXML
-    private TableColumn<Paciente, String> colCurp;
-    @FXML
-    private TableColumn<Paciente, String> colAlergias;
 
     @FXML
     private Label lblMsg;
@@ -48,39 +36,16 @@ public class AppController {
     private Label lblActivos;
     @FXML
     private Label lblInactivos;
-
     @FXML
+    private Consulta consultaController;
+
     private final ObservableList<Paciente> data = FXCollections.observableArrayList();
-    private Services.PersonService service = new PersonService();
+    private PersonService service = new PersonService();
 
     @FXML
-    public void initialize() throws IOException {
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colCurp.setCellValueFactory(new PropertyValueFactory<>("curp"));
-        colAlergias.setCellValueFactory(new PropertyValueFactory<>("alergias"));
-
-        tblPacientes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                txtNombre.setText(newSelection.getNombre());
-                txtEdad.setText(newSelection.getEdad());
-                txtTelefono.setText(newSelection.getTelefono());
-                txtCurp.setText(newSelection.getCurp());
-                txtAlergias.setText(newSelection.getAlergias());
-            }
-        });
-
-        try {
-            loadFromFile(); // Llenamos la lista
-            tblPacientes.setItems(data);
-            System.out.println("Items en la tabla: " + tblPacientes.getItems().size());
-
-        } catch (Exception e) {
-            System.out.println("Error al cargar: " + e.getMessage());
-        }
-
-    } //se ejecuta  el inicio en cuanto se cargue el  controller
+    public void initialize() {
+        // Ya no usamos tabla aquí
+    }
 
     @FXML
     public void onAgregar() {
@@ -90,16 +55,20 @@ public class AppController {
             String Telefono = txtTelefono.getText();
             String Curp = txtCurp.getText();
             String alergias = txtAlergias.getText();
-            boolean active = true;
-            Paciente nuevo = new Paciente(Nombre, Edad, Telefono, Curp, alergias, active);
+
+            Paciente nuevo = new Paciente(Nombre, Edad, Telefono, Curp, alergias, true);
             service.addPaciente(nuevo);
+
             lblMsg.setText("Paciente agregado");
+
             txtNombre.clear();
             txtEdad.clear();
             txtTelefono.clear();
             txtCurp.clear();
             txtAlergias.clear();
+
             loadFromFile();
+
         } catch (IOException e) {
             lblMsg.setText("Hubo un error");
         } catch (IllegalArgumentException e) {
@@ -107,49 +76,18 @@ public class AppController {
         }
     }
 
-
-    @FXML
-    public void onEliminar() {
-        try {
-            int index = tblPacientes.getSelectionModel().getSelectedIndex();
-            Paciente seleccionado = tblPacientes.getSelectionModel().getSelectedItem();
-            if (seleccionado == null) {
-                lblMsg.setText("Seleccina un paciente primero");
-                return;
-            }
-Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmar Inactivacion");
-            alert.setHeaderText("Confirmacion para inactivar a: " + seleccionado.getNombre() + "?");
-if (alert.showAndWait().get() == ButtonType.OK){
-    service.deletePaciente(index);
-
-    loadFromFile();
-    lblMsg.setText("Paciente inactivado correctamente");
-}
-            txtNombre.clear();
-            txtEdad.clear();
-            txtTelefono.clear();
-            txtCurp.clear();
-            txtAlergias.clear();
-            loadFromFile();
-        }catch (IOException e){
-            lblMsg.setText("Error al guardar los cambios");
-            e.printStackTrace();
-        }
-    }
-
-
     @FXML
     public void onActualizar() {
         try {
 
-            Paciente seleccionado = tblPacientes.getSelectionModel().getSelectedItem();
-            if (seleccionado == null){
-                lblMsg.setText("Selecciona un paciente primero");
+            if (DataHolder.pacienteSeleccionado == null) {
+                lblMsg.setText("Selecciona un paciente en la tabla primero");
                 return;
             }
 
-            int index = tblPacientes.getSelectionModel().getSelectedIndex();
+
+            int index = DataHolder.indexSeleccionado;
+
             String Nombre = txtNombre.getText();
             String Edad = txtEdad.getText();
             String Telefono = txtTelefono.getText();
@@ -159,10 +97,8 @@ if (alert.showAndWait().get() == ButtonType.OK){
             Paciente actualizado = new Paciente(Nombre, Edad, Telefono, Curp, alergias, true);
 
             service.update(index, actualizado);
-            lblMsg.setText("Paciente actualzido correcto");
-            lblMsg.setStyle("-fx-text-fill: green");
 
-            loadFromFile();
+            lblMsg.setText("Paciente actualizado correctamente");
 
             txtNombre.clear();
             txtEdad.clear();
@@ -170,45 +106,124 @@ if (alert.showAndWait().get() == ButtonType.OK){
             txtCurp.clear();
             txtAlergias.clear();
 
-        } catch (IllegalArgumentException ex) {
-            lblMsg.setText(ex.getMessage());
-            lblMsg.setStyle("-fx-text-fill: red");
-        }catch (IOException e){
-            lblMsg.setText("Hubo un error con el archivo");
+            loadFromFile();
+
+        } catch (Exception e) {
+            lblMsg.setText("Error al actualizar");
+        }
+        DataHolder.pacienteSeleccionado = null;
+        DataHolder.indexSeleccionado = -1;
+    }
+
+    @FXML
+    public void onEliminar() {
+        try {
+
+            // 🔥 ahora usamos DataHolder en vez de la tabla
+            if (DataHolder.pacienteSeleccionado == null) {
+                lblMsg.setText("Selecciona un paciente primero");
+                return;
+            }
+
+            int index = DataHolder.indexSeleccionado;
+            Paciente seleccionado = DataHolder.pacienteSeleccionado;
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmar Inactivacion");
+            alert.setHeaderText("Confirmacion para inactivar a: " + seleccionado.getNombre() + "?");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                service.deletePaciente(index);
+
+                loadFromFile();
+                lblMsg.setText("Paciente inactivado correctamente");
+            }
+
+            txtNombre.clear();
+            txtEdad.clear();
+            txtTelefono.clear();
+            txtCurp.clear();
+            txtAlergias.clear();
+
+            loadFromFile();
+
+            // 🔥 limpiar selección
+            DataHolder.pacienteSeleccionado = null;
+            DataHolder.indexSeleccionado = -1;
+
+        } catch (IOException e) {
+            lblMsg.setText("Error al guardar los cambios");
+            e.printStackTrace();
         }
     }
 
-
     private void loadFromFile() {
         try {
-            data.clear(); //limpia la lista para que no se dupliquen los datos
-            List<Paciente> pacientesFromService = service.getAllPacientes(); //se pide la lista de los pacientes al service
-            data.addAll(pacientesFromService); //agregamos todos los pacientes a la lista observable
+            data.clear();
+            List<Paciente> pacientesFromService = service.getAllPacientes();
+            data.addAll(pacientesFromService);
             updateResumen();
             lblMsg.setText("Datos cargados");
         } catch (IOException e) {
             lblMsg.setText("Error al leer el archivo");
         }
-        System.out.println("Lista tiene: " + data.size() + " elementos");
-for (Paciente p : data){
-    System.out.println("cargado: " + p.getNombre());
-}
     }
 
-    private void updateResumen(){
+    private void updateResumen() {
         int total = data.size();
         int activos = 0;
         int inactivos = 0;
 
-        for(Paciente p : data){
-            if (p.isActive()){
+        for (Paciente p : data) {
+            if (p.isActive()) {
                 activos++;
-            }else {
+            } else {
                 inactivos++;
             }
         }
+
         lblTotal.setText("Total: " + total);
         lblActivos.setText("Activos: " + activos);
         lblInactivos.setText("Inactivos " + inactivos);
+    }
+
+    @FXML
+    public void abrirTabla() {
+        FXMLLoader loader = null;
+        try {
+            loader = new FXMLLoader(
+                    getClass().getResource("/com/consultorio/utez2dpacientesjavafxequipo09/consulta.fxml")
+            );
+
+            Parent root = loader.load();
+            Consulta controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Pacientes");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        consultaController = loader.getController();
+
+    }
+
+    @FXML
+    public void cargarSeleccion() {
+
+        if (Utils.DataHolder.pacienteSeleccionado != null) {
+
+            Paciente p = Utils.DataHolder.pacienteSeleccionado;
+
+            txtNombre.setText(p.getNombre());
+            txtEdad.setText(p.getEdad());
+            txtTelefono.setText(p.getTelefono());
+            txtCurp.setText(p.getCurp());
+            txtAlergias.setText(p.getAlergias());
+
+            lblMsg.setText("Paciente cargado para editar");
+        }
     }
 }
