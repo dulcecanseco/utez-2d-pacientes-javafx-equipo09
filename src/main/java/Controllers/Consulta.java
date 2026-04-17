@@ -20,6 +20,7 @@ public class Consulta {
     @FXML private TableColumn<Paciente, String> colTelefono;
     @FXML private TableColumn<Paciente, String> colCurp;
     @FXML private TableColumn<Paciente, String> colAlergias;
+    @FXML private TableColumn<Paciente, Boolean> colEstatus;
     @FXML private Label lblMsg;
 
     private final ObservableList<Paciente> data = FXCollections.observableArrayList();
@@ -32,6 +33,21 @@ public class Consulta {
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCurp.setCellValueFactory(new PropertyValueFactory<>("curp"));
         colAlergias.setCellValueFactory(new PropertyValueFactory<>("alergias"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory<>("estatus"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory<>("active"));
+
+        colEstatus.setCellFactory(column -> new TableCell<Paciente, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "Activo" : "Inactivo");
+                }
+            }
+        });
 
         loadFromFile();
         tblPacientes.setItems(data);
