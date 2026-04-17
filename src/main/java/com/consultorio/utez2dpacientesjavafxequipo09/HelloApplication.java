@@ -16,9 +16,9 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        System.out.println("¡Intentando abrir la ventana!");
 
-        // 1. Buscamos el archivo de forma segura
+
+
         var resource = HelloApplication.class.getResource("hello-view.fxml");
 
         if (resource == null) {
@@ -27,13 +27,11 @@ public class HelloApplication extends Application {
             return;
         }
 
-        // 2. Si lo encuentra, lo cargamos
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Consultorio UTEZ");
         stage.setScene(scene);
         stage.show();
 
-        System.out.println(">>> ¡Ventana desplegada con éxito! <<<");
     }
 }

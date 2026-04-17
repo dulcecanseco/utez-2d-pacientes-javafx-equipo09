@@ -44,7 +44,6 @@ public class AppController {
 
     @FXML
     public void initialize() {
-        // Ya no usamos tabla aquí
     }
 
     @FXML
@@ -119,7 +118,6 @@ public class AppController {
     public void onEliminar() {
         try {
 
-            // 🔥 ahora usamos DataHolder en vez de la tabla
             if (DataHolder.pacienteSeleccionado == null) {
                 lblMsg.setText("Selecciona un paciente primero");
                 return;
@@ -147,7 +145,6 @@ public class AppController {
 
             loadFromFile();
 
-            // 🔥 limpiar selección
             DataHolder.pacienteSeleccionado = null;
             DataHolder.indexSeleccionado = -1;
 
