@@ -1,6 +1,7 @@
-Dulce Yazmin Canseco Juarez,30,7772087338,abcdefg,ninguna,false
-Luis Fernando Rodriguez Rayo,21,7771413075,jbjwbubuwdkwbuce2i98,ninguna,true
+Dulce Yazmin Canseco Juarez,30,7772087338,abcdefg,ninguna,true
+Luis Fernando Rodriguez Rayo,30,7771413075,jbjwbubuwdkwbuce2i98,ninguna,true
 melisa casandra sanchez vazquez,25,7771234567,svmc040303,ninguna,true
-Yessica Juarez Moreno,41,7773357564,JUMY830202MMSJSLA,ninguna,false
+Yessica Juarez Moreno,41,7773357564,JUMY830202MMSJSLA,ninguna,true
 Tobias Aguirre ,40,7771234567,jidfuyvbabh,a las mujeres,true
 Pablo Morsa,25,7779876543,abcdefgj,a los pajaros locos,true
+Alfonso Canseco Gomez,41,7772229707,jshydyvbswheybd,ninguna,true

@@ -12,7 +12,7 @@ import Utils.DataHolder;
 import java.io.IOException;
 import java.util.List;
 
-public class Consulta {
+public class Consulta { //Aqui se traen los campos de la tabla para mostrarlos
 
     @FXML private TableView<Paciente> tblPacientes;
     @FXML private TableColumn<Paciente, String> colNombre;
@@ -38,7 +38,7 @@ public class Consulta {
 
         colEstatus.setCellFactory(column -> new TableCell<Paciente, Boolean>() {
             @Override
-            protected void updateItem(Boolean item, boolean empty) {
+            protected void updateItem(Boolean item, boolean empty) { //Aqui se pasan los datos booleanos a texto para mostrar el status del paciente
                 super.updateItem(item, empty);
 
                 if (empty || item == null) {
